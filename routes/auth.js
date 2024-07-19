@@ -3,12 +3,12 @@ import bcrypt from 'bcrypt';
 import User from '../models/Users.js';
 import jwt from 'jsonwebtoken';
 const router = express.Router();
-const accountSid='ACa84ac8b4a3d29ec5a482bf38aabb8924';
-const authToken='271ef80782c40cce565e0239412b14c2';
 import twilio from "twilio";
-
+dotenv.config();
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = twilio(accountSid,authToken);
-
+const serviceId = process.env.TWILO_SERVICE_SID; // Twilio Verify Service SID
 let user,OTP,mobile;
 // Register user with phone, password, and confirm password
 router.post('/register', async (req, res) => {
@@ -33,7 +33,7 @@ router.post('/register', async (req, res) => {
     }
 
     await client.verify.v2
-    .services("VA5e9d4886701894b7cb5771c6d6925efc")
+    .services(serviceId)
     .verifications.create({
       channel:"sms",
       to:`${phone}`
@@ -62,7 +62,7 @@ router.post('/register/verify',async(req,res)=>{
     const {otp} = req.body;
 
     await client.verify.v2
-    .services("VA5e9d4886701894b7cb5771c6d6925efc")
+    .services(serviceId)
     .verificationChecks.create({
       code:`${otp}`,
       to:`${mobile}`,

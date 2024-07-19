@@ -6,7 +6,7 @@ dotenv.config();
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = twilio(accountSid, authToken);
-const serviceId = 'VA5e9d4886701894b7cb5771c6d6925efc'; // Twilio Verify Service SID
+const serviceId = process.env.TWILO_SERVICE_SID; // Twilio Verify Service SID
 
 export const sendOTP = async (phone) => {
   try {
